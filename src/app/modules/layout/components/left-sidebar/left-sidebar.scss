@@ -1,0 +1,10 @@
+.sidebar-enter {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  .sidebar-enter-active {
+    transform: translateX(0);
+    opacity: 1;
+    transition: all 0.4s ease;
+  }
+  

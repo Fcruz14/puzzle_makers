@@ -1,0 +1,7 @@
+
+@if(showGame()){
+    <app-game-question [actualQuestion]="actualQuestion()" />
+
+    <app-game-options [actualQuestion]="actualQuestion()" (onSelectAnswer)="onSelectAnswer($event)" (setNextQuestion)="setNextQuestion($event)" />
+
+}

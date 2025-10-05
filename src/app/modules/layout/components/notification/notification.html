@@ -1,0 +1,35 @@
+<div class="absolute z-[999] right-3 top-2">
+    <button
+      (click)="toggleModal()"
+      class="group absolute top-5 right-5 bg-white/80 backdrop-blur-md 
+             p-3 rounded-full shadow-lg border border-gray-200 hover:scale-110 
+             hover:shadow-xl transition-all duration-300 cursor-pointer active:scale-95"
+      aria-label="Documentos"
+    >
+      <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-7">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
+      </svg>
+
+      @if(hasUnread()){
+        <div
+          class="absolute top-2 right-2 w-3.5 h-3.5 bg-red-500 rounded-full border-2 border-white"
+        ></div>
+      }
+      
+      <span
+        class="tooltip absolute left-[-130px] top-1/2 -translate-y-1/2 px-3 py-1 text-sm
+               bg-black/90 text-white rounded-md opacity-0 pointer-events-none
+               group-hover:opacity-100 group-hover:translate-x-[-0.5rem]
+               transition-all duration-300 whitespace-nowrap shadow-lg"
+      >
+        Ver documentos
+      </span>
+    </button>
+</div>
+
+@if (isModalOpen()) {
+    <app-modal-info 
+        [pdfs]="pdfFiles" 
+        (closeModal)="closeModal()" 
+    />
+}

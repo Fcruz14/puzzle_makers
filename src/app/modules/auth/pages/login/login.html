@@ -1,0 +1,126 @@
+<style>
+    /* CLASES DE ANIMACIÓN PERSONALIZADAS PARA EL EFECTO SCIFI */
+    @keyframes glow-pulse {
+        0%, 100% {
+            text-shadow: 0 0 5px #38bdf8, 0 0 10px #38bdf8;
+        }
+        50% {
+            text-shadow: 0 0 10px #38bdf8, 0 0 20px #38bdf8;
+        }
+    }
+    .title-glow {
+        animation: glow-pulse 3s infinite alternate;
+    }
+    
+    @keyframes scan-line {
+        0% {
+            top: 0;
+        }
+        100% {
+            top: 100%;
+        }
+    }
+    .scan-effect::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 2px; /* Grosor de la línea de escaneo */
+        background: linear-gradient(90deg, transparent, rgba(56, 189, 248, 0.8), transparent);
+        animation: scan-line 4s infinite linear;
+        box-shadow: 0 0 5px rgba(56, 189, 248, 0.8);
+        pointer-events: none;
+    }
+    </style>
+    
+    <div class="min-h-screen w-full bg-gradient-to-b from-gray-900 via-sky-950 to-black font-mono text-white relative overflow-y-auto">
+    
+        <div class="absolute inset-0 -z-10">
+            <div class="absolute w-full h-full bg-cover bg-center opacity-10" style="background-image: url('assets/star-pattern.svg');"></div>
+            <div class="absolute w-48 h-48 bg-sky-400/10 rounded-full blur-3xl top-1/4 left-1/4 animate-pulse"></div>
+            <div class="absolute w-64 h-64 bg-purple-500/10 rounded-full blur-3xl bottom-1/4 right-1/4 animate-ping"></div>
+        </div>
+    
+        <div class="flex flex-col items-center justify-center px-4 py-12 md:py-20 lg:py-28">
+    
+            <div class="text-center mb-10">
+                <img src="https://images.seeklogo.com/logo-png/19/2/nasa-logo-png_seeklogo-195796.png"
+                     alt="NASA"
+                     class="mx-auto w-auto h-20 md:h-24 animate-pulse-slow">
+                <h2 class="text-3xl md:text-4xl font-extrabold tracking-widest title-glow mt-2">
+                    <span class="text-sky-400 drop-shadow-[0_0_8px_#38bdf8]">TERMINAL</span>
+                    <span class="text-white/90">: 01</span>
+                </h2>
+                <p class="text-sm md:text-base text-sky-200/70 italic mt-1 border-t border-sky-700/50 pt-1 inline-block">Módulo de Autenticación de Acceso</p>
+            </div>
+    
+            <div class="w-full max-w-md bg-gray-900/80 backdrop-blur-xl rounded-md shadow-3xl border-2 border-sky-600/60 p-8 space-y-8 relative overflow-hidden transition transform hover:shadow-[0_0_30px_7px_rgba(56,189,248,0.4)] skew-x-1">
+    
+                <div class="absolute inset-0 scan-effect"></div>
+    
+                <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="space-y-6">
+                    <div>
+                        <label for="usuario" class="block text-xs font-bold uppercase text-sky-400 tracking-widest mb-1">ID de Operador</label>
+                        <input
+                            id="usuario"
+                            type="text"
+                            formControlName="usuario"
+                            required
+                            class="mt-1 block w-full px-4 py-3 bg-gray-950/70 border-b-2 border-sky-700 focus:border-sky-400 rounded-none text-white placeholder-gray-500 focus:ring-0 outline-none transition duration-300"
+                            placeholder="ID_047_EXPLORER"
+                        >
+                        <div *ngIf="f['usuario'].invalid && (f['usuario'].dirty || f['usuario'].touched)"
+                             class="mt-1 text-xs text-red-400 bg-red-900/30 px-2 py-1 border border-red-500/50">
+                            <div *ngIf="f['usuario'].errors?.['required']">🔴 Campo obligatorio.</div>
+                            <div *ngIf="f['usuario'].errors?.['minlength']">🔴 Mín. 4 caracteres requeridos.</div>
+                        </div>
+                    </div>
+    
+                    <div>
+                        <label for="password" class="block text-xs font-bold uppercase text-sky-400 tracking-widest mb-1">Clave de Acceso</label>
+                        <input
+                            id="password"
+                            type="password"
+                            formControlName="password"
+                            required
+                            class="mt-1 block w-full px-4 py-3 bg-gray-950/70 border-b-2 border-sky-700 focus:border-sky-400 rounded-none text-white placeholder-gray-500 focus:ring-0 outline-none transition duration-300"
+                            placeholder="********"
+                        >
+                        <div *ngIf="f['password'].invalid && (f['password'].dirty || f['password'].touched)"
+                             class="mt-1 text-xs text-red-400 bg-red-900/30 px-2 py-1 border border-red-500/50">
+                            <div *ngIf="f['password'].errors?.['required']">🔴 Clave requerida.</div>
+                            <div *ngIf="f['password'].errors?.['minlength']">🔴 Mín. 6 caracteres requeridos.</div>
+                        </div>
+                    </div>
+    
+                    <div *ngIf="loginError" class="p-3 text-xs text-red-400 bg-red-900/40 rounded-sm border border-red-500/60 transition duration-300">
+                        <span class="animate-pulse">🚨 DENEGADO:</span> {{ loginError }}
+                    </div>
+    
+                    <button
+                        type="submit"
+                        [disabled]="loginForm.invalid || loading"
+                        class="w-full flex justify-center items-center py-3 px-4 rounded-md shadow-2xl text-sm md:text-base font-extrabold uppercase tracking-widest text-black bg-sky-400 hover:bg-sky-300 active:scale-[0.98] transition-all duration-200 border-b-4 border-sky-600 disabled:opacity-50 disabled:border-gray-500"
+                    >
+                        <ng-container *ngIf="!loading; else loadingTpl">
+                            <span>🛰️ ACCESO CONCEDIDO</span>
+                        </ng-container>
+                        <ng-template #loadingTpl>
+                            <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-black" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.4 0 0 5.4 0 12h4z"></path>
+                            </svg>
+                            <span>AUTENTICANDO CLAVE...</span>
+                        </ng-template>
+                    </button>
+                </form>
+    
+                <div class="text-center text-xs pt-4 border-t border-sky-700/50">
+                    <a (click)="goToRegister()" class="font-medium text-sky-400 hover:text-white cursor-pointer hover:underline tracking-wider transition">
+                        > Solicitar credenciales de recluta
+                    </a>
+                </div>
+            </div>
+            </div>
+    </div>

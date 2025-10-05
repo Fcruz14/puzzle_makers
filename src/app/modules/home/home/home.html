@@ -1,0 +1,30 @@
+
+<div class="home-container">
+    <canvas #canvas></canvas>
+    
+    <!-- Instrucción inicial -->
+    <div class="instruction" *ngIf="!isZooming">
+      <h1 class="title">PUZZLE MAKERS</h1>
+      <!-- <p class="subtitle">🧩 Haz clic en la pieza del rompecabezas para viajar</p> -->
+    </div>
+  
+    <!-- Mensaje durante el zoom -->
+    <div class="zooming-message" *ngIf="isZooming">
+      <div class="loading-spinner"></div>
+      <p>Viajando a Santa María del Mar...</p>
+    </div>
+
+    <div 
+    class="intro-overlay fixed inset-0 flex items-center justify-center bg-black/80 text-white text-2xl font-semibold cursor-pointer select-none transition-opacity duration-700 z-40" 
+    *ngIf="showIntroOverlay" 
+    (click)="hideIntroOverlay()"
+  >
+    <span class="animate-pulse">Haz click para continuar</span>
+  </div>
+  </div>
+
+  
+  <audio #audioPlayer [src]="audioUrl" loop muted volume="0.1"></audio>
+  
+  <div *ngIf="showUnmutePrompt" class="unmute-overlay"></div>
+  

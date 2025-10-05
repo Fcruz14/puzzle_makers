@@ -1,0 +1,17 @@
+@if(isLoading()){
+    <div class="w-screen h-screen bg-black opacity-90 fixed z-[9999] flex items-center justify-center">
+        <app-load />
+        <p class="connecting absolute bottom-5 mx-auto text-white">Connecting<span class="dots"></span></p>
+    </div>
+
+}
+
+<app-left-sidebar/>
+<app-map/>
+<app-notification/>
+<app-right-sidebar/>
+<app-search-bar/>
+
+
+<app-mini-game />
+

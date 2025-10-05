@@ -1,0 +1,62 @@
+<div 
+  class="fixed inset-0 bg-black/50 z-[10000] flex justify-center items-center overflow-y-auto"
+  (click)="onClose()"
+>
+  <div 
+    class="relative w-[95%] max-w-6xl 
+           transform bg-white rounded-xl shadow-2xl p-6 transition-all duration-500 ease-out modal-dropdown-animation
+           max-h-[95vh] overflow-y-auto"
+    (click)="$event.stopPropagation()"
+  >
+    <button 
+      (click)="onClose()"
+      class="sticky top-0 float-right text-gray-500 hover:text-gray-900 z-10 p-2 rounded-full hover:bg-gray-100 transition"
+      aria-label="Cerrar modal"
+    >
+      <svg class="size-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </button>
+    
+    <h2 class="text-2xl font-bold mb-4 border-b pb-2 text-gray-700 clear-right">Visor de Documentos PDF</h2>
+
+    <div class="flex flex-col md:flex-row h-[70vh] min-h-[400px]">
+
+      <div class="w-full md:w-1/4 pr-4 md:border-r border-gray-200 overflow-y-auto mb-4 md:mb-0 pb-2">
+        <h3 class="text-lg font-semibold mb-2 text-gray-600">Documentos</h3>
+        <ul class="space-y-2">
+          @for (pdf of pdfs(); track pdf.id) {
+            <li 
+              (click)="selectPdf(pdf)"
+              [class.bg-blue-100]="pdf.id === selectedPdf()?.id"
+              [class.border-blue-500]="pdf.id === selectedPdf()?.id"
+              class="p-3 border rounded-lg cursor-pointer hover:bg-gray-50 transition-colors shadow-sm"
+            >
+              <p class="font-medium text-gray-800 truncate">
+                <span class="text-blue-600 mr-2">📄</span> {{ pdf.name }}
+              </p>
+              <p class="text-xs text-gray-500">{{ pdf.url | slice:0:30 }}...</p>
+            </li>
+          } @empty {
+            <p class="text-gray-500 italic p-3">No hay documentos disponibles.</p>
+          }
+        </ul>
+      </div>
+
+      <div class="w-full md:w-3/4 pl-4 flex flex-col pt-2 md:pt-0">
+        @if (selectedPdf()) {
+          <p class="text-lg font-semibold mb-2 text-gray-600">{{ selectedPdf()!.name }}</p>
+          <iframe 
+            [src]="selectedPdf()!.url | safeUrl"
+            class="flex-grow w-full border border-gray-300 rounded-lg shadow-xl"
+            title="Visor de PDF: {{ selectedPdf()!.name }}"
+          ></iframe>
+        } @else {
+          <div class="flex items-center justify-center flex-grow text-gray-500 bg-gray-50 rounded-lg shadow-inner">
+            <p class="text-center">Selecciona un documento de la lista para previsualizarlo.</p>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</div>
